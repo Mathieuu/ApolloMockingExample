@@ -1,0 +1,27 @@
+# An ISO 8601-encoded datetime
+scalar ISO8601DateTime
+
+type Query {
+  # Find a repository by GhId
+  repositoryByGhId(ghId: Int!): Repository
+}
+
+type Repository {
+  createdAt: ISO8601DateTime!
+  description: String
+  ghId: Int!
+  name: String!
+  isPrivate: Boolean!
+  updatedAt: ISO8601DateTime!
+  issues: [Issue]
+}
+
+type Issue {
+  createdAt: ISO8601DateTime!
+  description: String
+  locked: Boolean!
+  number: Int!
+  title: String!
+  state: String!
+  updatedAt: ISO8601DateTime!
+}
