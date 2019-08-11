@@ -10,7 +10,7 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 import { ApolloProvider } from "react-apollo";
 import { SchemaLink } from "apollo-link-schema";
 
-import generalMocks from "./generalMocks";
+import defaultMocks from "./defaultMocks";
 import mergeResolvers from "./mergeResolvers";
 
 const ApplicationSchema = loader("./schema.graphql");
@@ -18,16 +18,19 @@ const ApplicationSchema = loader("./schema.graphql");
 // For queries with no variables
 const schema = makeExecutableSchema({ typeDefs: ApplicationSchema });
 
-const ApolloMockingProvider = ({ children, customResolvers }) => {
-  const mocks = mergeResolvers([generalMocks, customResolvers]);
+export const getClient = customResolvers => {
+  const mocks = mergeResolvers([defaultMocks, customResolvers]);
 
   addMockFunctionsToSchema({ schema, mocks });
 
-  const client = new ApolloClient({
+  return new ApolloClient({
     link: new SchemaLink({ schema }),
     cache: new InMemoryCache()
   });
+};
 
+const ApolloMockingProvider = ({ children, customResolvers }) => {
+  const client = getClient(customResolvers);
   return <ApolloProvider client={client}>{children}</ApolloProvider>;
 };
 
