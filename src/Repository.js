@@ -2,7 +2,7 @@ import React from "react";
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
 
-const gqlQuery = ghId => {
+export const gqlQuery = ghId => {
   return gql`
     {
       repositoryByGhId(ghId: ${ghId}) {

@@ -31,6 +31,19 @@ const ApolloMockingProvider = ({ children, customResolvers }) => {
   return <ApolloProvider client={client}>{children}</ApolloProvider>;
 };
 
+export const getMockedClient = resolvers => {
+  const mocks = mergeResolvers([generalMocks, resolvers]);
+
+  addMockFunctionsToSchema({ schema, mocks });
+
+  const client = new ApolloClient({
+    link: new SchemaLink({ schema }),
+    cache: new InMemoryCache()
+  });
+
+  return client;
+};
+
 ApolloMockingProvider.propTypes = {
   children: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
   customResolvers: PropTypes.shape({})
