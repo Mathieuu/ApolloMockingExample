@@ -15,10 +15,9 @@ import mergeResolvers from "./mergeResolvers";
 
 const ApplicationSchema = loader("./schema.graphql");
 
-// For queries with no variables
 const schema = makeExecutableSchema({ typeDefs: ApplicationSchema });
 
-export const getClient = customResolvers => {
+export const getClient = (customResolvers = {}) => {
   const mocks = mergeResolvers([defaultMocks, customResolvers]);
 
   addMockFunctionsToSchema({ schema, mocks });

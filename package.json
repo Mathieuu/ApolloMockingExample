@@ -18,6 +18,7 @@
     "graphql-tag": "^2.10.1",
     "graphql-tools": "^4.0.5",
     "graphql.macro": "^1.4.2",
+    "ramda": "^0.26.1",
     "react": "^16.9.0",
     "react-apollo": "^3.0.0",
     "react-dom": "^16.9.0",
@@ -43,5 +44,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@apollo/react-testing": "^3.0.0"
   }
 }

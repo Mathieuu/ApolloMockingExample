@@ -24,16 +24,16 @@ const jan2019 = new Date(1546510000000);
 
 const resolvers = {
   ISO8601DateTime: () => jan2019,
-  Repository: () => ({
-    ghId: getNextId,
-    name: formatRepoName(faker.commerce.productName()),
-    description: faker.company.catchPhrase()
-  }),
-  Issue: () => ({
+  Repository: {
+    ghId: () => getNextId(),
+    name: () => formatRepoName(faker.commerce.productName()),
+    description: () => faker.company.catchPhrase()
+  },
+  Issue: {
     number: getNextId,
     title: () => faker.hacker.phrase(),
-    state: () => (Math.random() > 0.5 ? "open" : "closed")
-  })
+    state: () => "open"
+  }
 };
 
 export default resolvers;

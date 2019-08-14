@@ -1,21 +1,21 @@
 import React from "react";
-import Repository from "./Repository";
-import { render } from "./mocking/ApolloMockingProvider";
+import Repository, { gqlQuery } from "./Repository";
+import { getClient, render } from "./mocking/ApolloMockingProvider";
 
 const zenhubRepo = {
-  Repository: () => ({
+  Repository: {
     name: "ZenHubHQ"
-  })
+  }
 };
 
 const threeIssues = {
-  Repository: () => ({
+  Repository: {
     issues: [
       { number: 1, title: "Issue 1" },
       { number: 2, title: "Issue 2" },
       { number: 3, title: "Issue 3" }
     ]
-  })
+  }
 };
 
 describe("<Repository />", () => {
