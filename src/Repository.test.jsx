@@ -3,7 +3,7 @@ import Repository, { gqlQuery } from "./Repository";
 import { getClient, render } from "./mocking/ApolloMockingProvider";
 
 const zenhubRepo = {
-  Repository: {
+  Repository: () => {
     name: "ZenHubHQ"
   }
 };

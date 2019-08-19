@@ -5,9 +5,11 @@ import ApolloMockingProvider, { getClient } from "./mocking/ApolloMockingProvide
 
 function App() {
   // Demo random data generation (maybe disable defaultMocks?)
-  // getClient({})
-  //   .query({ query: gqlQuery(1) })
-  //   .then(res => console.log("Random data", res.data));
+  getClient({})
+    .query({ query: gqlQuery(1) })
+    .then(res => {
+      console.log("Random data", res);
+    });
 
   return (
     <div className="App">

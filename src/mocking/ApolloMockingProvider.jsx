@@ -9,6 +9,7 @@ import { ApolloClient } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { ApolloProvider } from "react-apollo";
 import { SchemaLink } from "apollo-link-schema";
+import { ApolloLink, Observable } from "apollo-link";
 
 import defaultMocks from "./defaultMocks";
 import mergeResolvers from "./mergeResolvers";
@@ -17,13 +18,35 @@ const ApplicationSchema = loader("./schema.graphql");
 
 const schema = makeExecutableSchema({ typeDefs: ApplicationSchema });
 
+const formatRelayMiddleware = new ApolloLink((operation, forward) => {
+  const observable = forward(operation);
+
+  return new Observable(observer => {
+    const subscription = observable.subscribe({
+      next: res => {
+        return observer.next.bind(observer)({
+          // CANNOT ADD DATA THAT DON'T FIT THE SCHEMA IN DATA
+          ...res,
+          nested1: "nested1" // NOT SENT BACK
+        });
+      },
+      complete: observer.complete.bind(observer),
+      error: observer.error.bind(observer)
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  });
+});
+
 export const getClient = (customResolvers = {}) => {
   const mocks = mergeResolvers([defaultMocks, customResolvers]);
 
   addMockFunctionsToSchema({ schema, mocks });
 
   return new ApolloClient({
-    link: new SchemaLink({ schema }),
+    link: formatRelayMiddleware.concat(new SchemaLink({ schema })),
     cache: new InMemoryCache()
   });
 };
